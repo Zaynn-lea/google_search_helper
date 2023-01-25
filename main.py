@@ -25,7 +25,7 @@ import pygame
 import pygame_widgets
 
 import Boxes
-from graphic_tool import colors
+import colors
 import pygame_widgets_import as pwi
 
 

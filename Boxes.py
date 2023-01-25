@@ -20,7 +20,7 @@ app made in python using pygame and pygame_widgets
 import pygame
 import pygame_widgets
 
-from graphic_tool import colors
+import colors
 import pygame_widgets_import as pwi
 
 
