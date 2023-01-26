@@ -147,6 +147,12 @@ class Box(object):
             return self.text_input.getText()
         return parser(self.text_input.getText())
 
+    def get_raw_text(self):
+        """
+        TODO
+        """
+        return self.text_input.getText()
+
 
 class BoxExact(Box):
     def __init__(self, world, index: int):
@@ -374,11 +380,164 @@ class BoxDate(Box):
                 and (len(day) == 0 or day is None):
             return ''
 
-        if not(year.isnumeric() and month.isnumeric() and day.isnumeric()):
-            return ''  # TODO : better error handling in that case, like informing the user
+        # if not(year.isnumeric() and month.isnumeric() and day.isnumeric()):
+        #     return ''  # TODO : better error handling in that case, like informing the user
+        # TODO beter text for the isnumeric, the length and the order
 
         text = f"{self.box_type}:{year}{self.separator}" \
                f"{'00' if len(month) == 0 or month is None else month}{self.separator}" \
-               f"{'00' if len(day) == 0 or day is None else day}{self.separator}"
+               f"{'00' if len(day) == 0 or day is None else day}"
+
+        return text
+
+
+class BoxDateRange(Box):
+    def __init__(self, world, index: int):
+        """
+        TODO
+        """
+        super().__init__(world, index, box_type="Range")
+        self.separator = '-'
+
+    def _create(self):
+        """
+        TODO
+        """
+        x, y = self.coord
+        opp_x, opp_y = self.opp_coord
+
+        # border :
+
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+
+        # label :
+        self.display_text(self.box_type, (x + 75, y + 15), colors.colors["white"], is_center=(True, True), font_size=23)
+
+        # buttons
+        self.left_button = pwi.Button(self.world.screen, x + 10, y + 25, 30, 20, text="<-",
+                                      textColour=colors.colors["green"], font_size=30,
+                                      onClick=lambda: self.world.box_go_left(self.index))
+        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 25, 30, 20, text="X",
+                                        textColour=colors.colors["red"], font_size=30,
+                                        onClick=lambda: self.world.delete_box(self.index))
+        self.right_button = pwi.Button(self.world.screen, x + 110, y + 25, 30, 20, text="->",
+                                       textColour=colors.colors["green"], font_size=30,
+                                       onClick=lambda: self.world.box_go_right(self.index))
+
+        # first date input
+        self.first_year_input = pwi.TextBox(self.world.screen,  x + 5,   y + 50, 55, 25)
+        self.first_month_input = pwi.TextBox(self.world.screen, x + 70,  y + 50, 35, 25)
+        self.first_day_input = pwi.TextBox(self.world.screen,   x + 115, y + 50, 35, 25)
+
+        # last date input
+        self.last_year_input = pwi.TextBox(self.world.screen,  x + 5,   y + 70, 55, 25)
+        self.last_month_input = pwi.TextBox(self.world.screen, x + 70,  y + 70, 35, 25)
+        self.last_day_input = pwi.TextBox(self.world.screen,   x + 115, y + 70, 35, 25)
+
+        # label for the input
+        # self.display_text("year",  (x + 32,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        # self.display_text("month", (x + 87,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        # self.display_text("day",   (x + 132, y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+
+        # TODO : make the interface more easy to use
+
+        # " / " between input boxes
+        self.display_text('/', (x + 65,  y + 85), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 85), colors.colors["white"], is_center=(True, True), font_size=40)
+
+        self.display_text('/', (x + 65,  y + 65), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 65), colors.colors["white"], is_center=(True, True), font_size=40)
+
+    def update_index(self, new_index: int):
+        """
+        TODO
+        """
+        first_year_transfer = self.first_year_input.getText()
+        first_month_transfer = self.first_month_input.getText()
+        first_day_transfer = self.first_day_input.getText()
+        last_year_transfer = self.last_year_input.getText()
+        last_month_transfer = self.last_month_input.getText()
+        last_day_transfer = self.last_day_input.getText()
+
+        self.delete_widgets()
+        self.index = new_index
+        self.x, self.y = self.coord = (15 + (new_index * 160), 260)
+        self.opp_x, self.opp_y = self.opp_coord = self.x + 150, self.y + 100
+        self._create()
+
+        self.first_year_input.setText(first_year_transfer)
+        self.first_month_input.setText(first_month_transfer)
+        self.first_day_input.setText(first_day_transfer)
+        self.last_year_input.setText(last_year_transfer)
+        self.last_month_input.setText(last_month_transfer)
+        self.last_day_input.setText(last_day_transfer)
+
+    def delete_widgets(self):
+        """
+        TODO
+        """
+        self.delete_button.disable()
+        self.left_button.disable()
+        self.right_button.disable()
+        self.first_year_input.disable()
+        self.first_month_input.disable()
+        self.first_day_input.disable()
+        self.last_year_input.disable()
+        self.last_month_input.disable()
+        self.last_day_input.disable()
+
+        self.delete_button.hide()
+        self.left_button.hide()
+        self.right_button.hide()
+        self.first_year_input.hide()
+        self.first_month_input.hide()
+        self.first_day_input.hide()
+        self.last_year_input.hide()
+        self.last_month_input.hide()
+        self.last_day_input.hide()
+
+        del self.delete_button
+        del self.left_button
+        del self.right_button
+        del self.first_year_input
+        del self.first_month_input
+        del self.first_day_input
+        del self.last_year_input
+        del self.last_month_input
+        del self.last_day_input
+
+    def get_text(self, parser=lambda x=0: None):
+        """
+        TODO
+        """
+        first_year = self.first_year_input.getText()
+        first_month = self.first_month_input.getText()
+        first_day = self.first_day_input.getText()
+        last_year = self.last_year_input.getText()
+        last_month = self.last_month_input.getText()
+        last_day = self.last_day_input.getText()
+
+        if (len(first_year) == 0 or first_year is None)\
+                and (len(first_month) == 0 or first_month is None)\
+                and (len(first_day) == 0 or first_day is None)\
+                and (len(last_year) == 0 or last_year is None)\
+                and (len(last_month) == 0 or last_month is None)\
+                and (len(last_day) == 0 or last_day is None):
+            return ''
+
+        # if not(first_year.isnumeric() and first_month.isnumeric() and first_day.isnumeric()
+        #         and last_year.isnumeric() and last_month.isnumeric() and last_day.isnumeric()):
+        #     return ''  # TODO : better error handling in that case, like informing the user
+        # TODO beter text for the isnumeric, the length and the order
+
+        text = f"{first_year}{self.separator}" \
+               f"{'00' if len(first_month) == 0 or first_month is None else first_month}{self.separator}" \
+               f"{'00' if len(first_day) == 0 or first_day is None else first_day}{self.separator}" \
+               f"::{last_year}{self.separator}" \
+               f"{'00' if len(last_month) == 0 or last_month is None else last_month}{self.separator}" \
+               f"{'00' if len(last_day) == 0 or last_day is None else last_day}{self.separator}"
 
         return text

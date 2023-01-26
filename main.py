@@ -90,17 +90,28 @@ class World(object):
         any_button = pwi.Button(self.screen, 320, 165, 70, 20, text="Any", fontSize=25,
                                 onClick=lambda: self.lst_box.append(Boxes.BoxAny(self, len(self.lst_box))))
 
+        def date_button_onclick():
+            """
+            function used locally for the date_button onClick parameter
+            had to do it like that to have the try except block that you can't have using a lambda expression
+            """
+            selected = date_menu.getSelected()
+            try:
+                self.lst_box.append(selected(self, len(self.lst_box)))
+            except TypeError:
+                pass
+
         date_menu = pwi.Dropdown(self.screen, 410, 180, 70, 20, name="Type", choices=["Before", "After", "Range"],
                                  values=[
                                      lambda world, index: Boxes.BoxDate(world, index, box_type="Before"),
                                      lambda world, index: Boxes.BoxDate(world, index, box_type="After"),
-                                     lambda world, index: Boxes.BoxDateRange(world, index),  # TODO : Boxes.BoxDateRange
-                                 ], fontSize=25)  # TODO : solve the bug when you clic date without selecting nothing
+                                     lambda world, index: Boxes.BoxDateRange(world, index),
+                                 ], fontSize=25)
         date_button = pwi.Button(self.screen, 410, 150, 70, 20, text="Date", fontSize=25,
-                                 onClick=lambda: self.lst_box.append(date_menu.getSelected()(self, len(self.lst_box))))
+                                 onClick=date_button_onclick)
 
         # border :
-        pygame.draw.line(self.screen, white, (30,                110), (30,                210),  2)  # left
+        pygame.draw.line(self.screen, white, (30,                110), (30,                210), 2)  # left
         pygame.draw.line(self.screen, white, (screen_width - 30, 110), (screen_width - 30, 210), 2)  # right
         pygame.draw.line(self.screen, white, (30,                110), (screen_width - 30, 110), 2)  # top
         pygame.draw.line(self.screen, white, (screen_width - 30, 210), (30,                210), 2)  # bottom
@@ -115,12 +126,13 @@ class World(object):
         # | buttons for others actions |
         # +----------------------------+
 
-        reset_button = pwi.Button(self.screen, (screen_width // 2) - 210, 430, 200, 40, text="Reset",
+        reset_button = pwi.Button(self.screen, (screen_width // 2) - 310, 440, 200, 40, text="Reset",
                                   fontSize=30, onClick=lambda: self.reset_lst_box())
-        search_button = pwi.Button(self.screen, (screen_width // 2) + 10, 430, 200, 40, text="Search on the web",
-                                   fontSize=30, onClick=lambda: self.search())
-        # TODO : having the option to search with the parsing, without the parsing or both at the same time
-        #  should use something like a top down menu or a couple of tick boxes
+        search_button = pwi.Button(self.screen, (screen_width // 2) - 100, 440, 200, 40, text="Search on the web",
+                                   fontSize=30, onClick=lambda: self.search(search_mode_selection))
+        search_mode_selection = pwi.Checkbox(self.screen, (screen_width // 2) + 110, 430, 200, 60,
+                                             ("Without keyword", "With keyword"),
+                                             colour=(150, 150, 150), fontSize=30)  # the same color as the button
 
         # TODO : making border radius to have a more pleasant experience
 
@@ -228,21 +240,34 @@ class World(object):
 
             self.lst_box[box_index - 1], self.lst_box[box_index] = self.lst_box[box_index], self.lst_box[box_index - 1]
 
-    def search(self):
+    def search(self, search_mode_selection: pwi.Checkbox):
         """
         TODO
         """
-        query = "http://www.google.com/search?q="
+        query_parsed = "http://www.google.com/search?q="
+        query_raw = "http://www.google.com/search?q="
+
+        without_keyword, with_keyword = search_mode_selection.selected.copy()
 
         for i, box in enumerate(self.lst_box):
             if i:
                 if box.box_type == "Avoid":
-                    query += '-'
+                    query_parsed += '-'
                 else:
-                    query += '+'
-            query += box.get_text().strip()
+                    query_parsed += '+'
+                    if box.box_type in ("Normal", "Exact"):
+                        query_raw += '+'
+            if box.box_type == "Avoid":
+                query_parsed += box.get_text()
+            else:
+                query_parsed += box.get_text().strip().replace(' ', '+')
+                if box.box_type in ("Normal", "Exact"):
+                    query_raw += box.get_raw_text().strip().replace(' ', '+')
 
-        webbrowser.open(query)
+        if with_keyword:
+            webbrowser.open(query_parsed)
+        if without_keyword:
+            webbrowser.open(query_raw)
 
     def reset_lst_box(self):
         """
