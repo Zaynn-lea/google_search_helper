@@ -46,6 +46,8 @@ class World(object):
 
             .display_text(start_pos, text, color)
 
+            TODO
+
         ----------------------------------------------------------------------------------------------------------------
 
         :param screen: the pygame.surface object on witch this world is going to be applied
@@ -79,20 +81,29 @@ class World(object):
         self.display_text("Add Options", ((screen_width // 2), 120), white,
                           is_center=(True, False), font_size=40)
         # buttons :
-        normal_button = pwi.Button(self.screen, 50, 150, 70, 20, text="Normal", fontSize=25,
+        normal_button = pwi.Button(self.screen, 50, 165, 70, 20, text="Normal", fontSize=25,
                                    onClick=lambda: self.lst_box.append(Boxes.Box(self, len(self.lst_box))))
-        exact_button = pwi.Button(self.screen, 140, 150, 70, 20, text="Exact", fontSize=25,
+        exact_button = pwi.Button(self.screen, 140, 165, 70, 20, text="Exact", fontSize=25,
                                   onClick=lambda: self.lst_box.append(Boxes.BoxExact(self, len(self.lst_box))))
-        avoid_button = pwi.Button(self.screen, 230, 150, 70, 20, text="Avoid", fontSize=25,
+        avoid_button = pwi.Button(self.screen, 230, 165, 70, 20, text="Avoid", fontSize=25,
                                   onClick=lambda: self.lst_box.append(Boxes.BoxAvoid(self, len(self.lst_box))))
-        any_button = pwi.Button(self.screen, 320, 150, 70, 20, text="Any", fontSize=25,
+        any_button = pwi.Button(self.screen, 320, 165, 70, 20, text="Any", fontSize=25,
                                 onClick=lambda: self.lst_box.append(Boxes.BoxAny(self, len(self.lst_box))))
 
+        date_menu = pwi.Dropdown(self.screen, 410, 180, 70, 20, name="Type", choices=["Before", "After", "Range"],
+                                 values=[
+                                     lambda world, index: Boxes.BoxDate(world, index, box_type="Before"),
+                                     lambda world, index: Boxes.BoxDate(world, index, box_type="After"),
+                                     lambda world, index: Boxes.BoxDateRange(world, index),  # TODO : Boxes.BoxDateRange
+                                 ], fontSize=25)  # TODO : solve the bug when you clic date without selecting nothing
+        date_button = pwi.Button(self.screen, 410, 150, 70, 20, text="Date", fontSize=25,
+                                 onClick=lambda: self.lst_box.append(date_menu.getSelected()(self, len(self.lst_box))))
+
         # border :
-        pygame.draw.line(self.screen, white, (30,                110), (30,                180),  2)  # left
-        pygame.draw.line(self.screen, white, (screen_width - 30, 110), (screen_width - 30, 180), 2)  # right
+        pygame.draw.line(self.screen, white, (30,                110), (30,                210),  2)  # left
+        pygame.draw.line(self.screen, white, (screen_width - 30, 110), (screen_width - 30, 210), 2)  # right
         pygame.draw.line(self.screen, white, (30,                110), (screen_width - 30, 110), 2)  # top
-        pygame.draw.line(self.screen, white, (screen_width - 30, 180), (30,                180), 2)  # bottom
+        pygame.draw.line(self.screen, white, (screen_width - 30, 210), (30,                210), 2)  # bottom
 
         # +-------------------------+
         # | list of the input boxes |
@@ -104,12 +115,14 @@ class World(object):
         # | buttons for others actions |
         # +----------------------------+
 
-        reset_button = pwi.Button(self.screen, (screen_width // 2) - 210, 400, 200, 40, text="Reset",
+        reset_button = pwi.Button(self.screen, (screen_width // 2) - 210, 430, 200, 40, text="Reset",
                                   fontSize=30, onClick=lambda: self.reset_lst_box())
-        search_button = pwi.Button(self.screen, (screen_width // 2) + 10, 400, 200, 40, text="Search on the web",
+        search_button = pwi.Button(self.screen, (screen_width // 2) + 10, 430, 200, 40, text="Search on the web",
                                    fontSize=30, onClick=lambda: self.search())
         # TODO : having the option to search with the parsing, without the parsing or both at the same time
         #  should use something like a top down menu or a couple of tick boxes
+
+        # TODO : making border radius to have a more pleasant experience
 
         return True
 

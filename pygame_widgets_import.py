@@ -18,3 +18,4 @@ everything as if it was one file and not a package of multiple file
 
 from pygame_widgets.button import *
 from pygame_widgets.textbox import *
+from pygame_widgets.dropdown import *

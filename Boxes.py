@@ -18,7 +18,6 @@ app made in python using pygame and pygame_widgets
 """
 
 import pygame
-import pygame_widgets
 
 import colors
 import pygame_widgets_import as pwi
@@ -42,7 +41,7 @@ class Box(object):
         self.world = world
         self.box_type = box_type
         self.index = index
-        self.x, self.y = self.coord = (15 + (index * 160), 230)
+        self.x, self.y = self.coord = (15 + (index * 160), 260)
         self.opp_x, self.opp_y = self.opp_coord = self.x + 150, self.y + 100
         self._create()
 
@@ -64,14 +63,14 @@ class Box(object):
         self.display_text(self.box_type, (x + 75, y + 15), colors.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons
-        self.left_button = pwi.Button(self.world.screen, x + 10, y + 30, 30, 20,
-                                      text="<-", textColour=colors.colors["green"], font_size=30,
+        self.left_button = pwi.Button(self.world.screen, x + 10, y + 30, 30, 20, text="<-",
+                                      textColour=colors.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
-        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 30, 30, 20,
-                                        text="X", textColour=colors.colors["red"], font_size=30,
+        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 30, 30, 20, text="X",
+                                        textColour=colors.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
-        self.right_button = pwi.Button(self.world.screen, x + 110, y + 30, 30, 20,
-                                       text="->", textColour=colors.colors["green"], font_size=30,
+        self.right_button = pwi.Button(self.world.screen, x + 110, y + 30, 30, 20, text="->",
+                                       textColour=colors.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
         # input:
@@ -116,7 +115,7 @@ class Box(object):
         text_transfer = self.text_input.getText()
         self.delete_widgets()
         self.index = new_index
-        self.x, self.y = self.coord = (15 + (new_index * 160), 230)
+        self.x, self.y = self.coord = (15 + (new_index * 160), 260)
         self.opp_x, self.opp_y = self.opp_coord = self.x + 150, self.y + 100
         self._create()
         self.text_input.setText(text_transfer)
@@ -226,14 +225,14 @@ class BoxAny(Box):
         self.display_text(self.box_type, (x + 75, y + 20), colors.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons :
-        self.left_button = pwi.Button(self.world.screen, x + 10, y + 45, 30, 20,
-                                      text="<-", textColour=colors.colors["green"], font_size=30,
+        self.left_button = pwi.Button(self.world.screen, x + 10, y + 45, 30, 20, text="<-",
+                                      textColour=colors.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
-        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 45, 30, 20,
-                                        text="X", textColour=colors.colors["red"], font_size=30,
+        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 45, 30, 20, text="X",
+                                        textColour=colors.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
-        self.right_button = pwi.Button(self.world.screen, x + 110, y + 45, 30, 20,
-                                       text="->", textColour=colors.colors["green"], font_size=30,
+        self.right_button = pwi.Button(self.world.screen, x + 110, y + 45, 30, 20, text="->",
+                                       textColour=colors.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
     def update_index(self, new_index: int):
@@ -242,7 +241,7 @@ class BoxAny(Box):
         """
         self.delete_widgets()
         self.index = new_index
-        self.x, self.y = self.coord = (15 + (new_index * 160), 230)
+        self.x, self.y = self.coord = (15 + (new_index * 160), 260)
         self.opp_x, self.opp_y = self.opp_coord = self.x + 150, self.y + 100
         self._create()
 
@@ -267,3 +266,119 @@ class BoxAny(Box):
         TODO
         """
         return '*'
+
+
+class BoxDate(Box):
+    def __init__(self, world, index: int, box_type: str = "Before"):
+        """
+        TODO
+        """
+        super().__init__(world, index, box_type=box_type)
+        self.separator = '-'
+
+    def _create(self):
+        """
+        TODO
+        """
+        x, y = self.coord
+        opp_x, opp_y = self.opp_coord
+
+        # border :
+
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+
+        # label :
+        self.display_text(self.box_type, (x + 75, y + 15), colors.colors["white"], is_center=(True, True), font_size=23)
+
+        # buttons
+        self.left_button = pwi.Button(self.world.screen, x + 10, y + 25, 30, 20, text="<-",
+                                      textColour=colors.colors["green"], font_size=30,
+                                      onClick=lambda: self.world.box_go_left(self.index))
+        self.delete_button = pwi.Button(self.world.screen, x + 60, y + 25, 30, 20, text="X",
+                                        textColour=colors.colors["red"], font_size=30,
+                                        onClick=lambda: self.world.delete_box(self.index))
+        self.right_button = pwi.Button(self.world.screen, x + 110, y + 25, 30, 20, text="->",
+                                       textColour=colors.colors["green"], font_size=30,
+                                       onClick=lambda: self.world.box_go_right(self.index))
+
+        # date input
+        self.year_input = pwi.TextBox(self.world.screen,  x + 5,   y + 65, 55, 30)
+        self.month_input = pwi.TextBox(self.world.screen, x + 70,  y + 65, 35, 30)
+        self.day_input = pwi.TextBox(self.world.screen,   x + 115, y + 65, 35, 30)
+
+        # label for the input
+        self.display_text("year",  (x + 32,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        self.display_text("month", (x + 87,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        self.display_text("day",   (x + 132, y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+
+        # " / " between input boxes
+        self.display_text('/', (x + 65,  y + 80), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 80), colors.colors["white"], is_center=(True, True), font_size=40)
+
+    def update_index(self, new_index: int):
+        """
+        TODO
+        """
+        year_transfer = self.year_input.getText()
+        month_transfer = self.month_input.getText()
+        day_transfer = self.day_input.getText()
+
+        self.delete_widgets()
+        self.index = new_index
+        self.x, self.y = self.coord = (15 + (new_index * 160), 260)
+        self.opp_x, self.opp_y = self.opp_coord = self.x + 150, self.y + 100
+        self._create()
+
+        self.year_input.setText(year_transfer)
+        self.month_input.setText(month_transfer)
+        self.day_input.setText(day_transfer)
+
+    def delete_widgets(self):
+        """
+        TODO
+        """
+        self.delete_button.disable()
+        self.left_button.disable()
+        self.right_button.disable()
+        self.year_input.disable()
+        self.month_input.disable()
+        self.day_input.disable()
+
+        self.delete_button.hide()
+        self.left_button.hide()
+        self.right_button.hide()
+        self.year_input.hide()
+        self.month_input.hide()
+        self.day_input.hide()
+
+        del self.delete_button
+        del self.left_button
+        del self.right_button
+        del self.year_input
+        del self.month_input
+        del self.day_input
+
+    def get_text(self, parser=lambda x=0: None):
+        """
+        TODO
+        """
+        year = self.year_input.getText()
+        month = self.month_input.getText()
+        day = self.day_input.getText()
+
+        if (len(year) == 0 or year is None)\
+                and (len(month) == 0 or month is None)\
+                and (len(day) == 0 or day is None):
+            return ''
+
+        if not(year.isnumeric() and month.isnumeric() and day.isnumeric()):
+            return ''  # TODO : better error handling in that case, like informing the user
+
+        text = f"{self.box_type}:{year}{self.separator}" \
+               f"{'00' if len(month) == 0 or month is None else month}{self.separator}" \
+               f"{'00' if len(day) == 0 or day is None else day}{self.separator}"
+
+        return text
