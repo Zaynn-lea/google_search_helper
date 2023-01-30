@@ -20,3 +20,4 @@ from pygame_widgets.button import *
 from pygame_widgets.textbox import *
 from pygame_widgets.dropdown import *
 from pygame_widgets.selection import *
+from pygame_widgets.popup import *
