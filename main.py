@@ -25,7 +25,7 @@ import pygame
 import pygame_widgets
 
 import Boxes
-import colors
+import graphic_tool_import as gti
 import pygame_widgets_import as pwi
 
 
@@ -86,7 +86,7 @@ class World(object):
         :return: bool
         """
         screen_width, screen_height = self.screen_size
-        white = colors.colors["white"]
+        white = gti.colors["white"]
 
         # main app title
         self.display_text("Google Search Butler", ((screen_width // 2), 30), white,
@@ -238,10 +238,10 @@ class World(object):
         del del_box
 
         try:
-            pygame.draw.rect(self.screen, colors.colors["black"],
+            pygame.draw.rect(self.screen, gti.colors["black"],
                              (del_box_x, del_box_y, lst_right[-1].opp_x, lst_right[-1].opp_y))
         except IndexError:
-            pygame.draw.rect(self.screen, colors.colors["black"],
+            pygame.draw.rect(self.screen, gti.colors["black"],
                              (del_box_x, del_box_y, del_box_opp_x, del_box_opp_y))
 
         for i, box in enumerate(lst_right):
@@ -268,7 +268,7 @@ class World(object):
             raise ValueError("box_index must be positive")
 
         if (box_index != len(self.lst_box) - 1) and (len(self.lst_box) != 0):
-            pygame.draw.rect(self.screen, colors.colors["black"],
+            pygame.draw.rect(self.screen, gti.colors["black"],
                              (self.lst_box[box_index].x, self.lst_box[box_index].y,
                               self.lst_box[box_index + 1].opp_x, self.lst_box[box_index + 1].opp_y))
 
@@ -293,7 +293,7 @@ class World(object):
             raise ValueError("box_index must be positive")
 
         if (box_index != 0) and (len(self.lst_box) != 0):
-            pygame.draw.rect(self.screen, colors.colors["black"],
+            pygame.draw.rect(self.screen, gti.colors["black"],
                              (self.lst_box[box_index - 1].x, self.lst_box[box_index - 1].y,
                               self.lst_box[box_index].opp_x, self.lst_box[box_index].opp_y))
 
@@ -307,7 +307,7 @@ class World(object):
         method to reset self.lst_box to its original state
         meaning : self.lst_box containing a unique default Box (type = " Normal ")
         """
-        pygame.draw.rect(self.screen, colors.colors["black"],
+        pygame.draw.rect(self.screen, gti.colors["black"],
                          (self.lst_box[0].x, self.lst_box[0].y, self.lst_box[-1].opp_x, self.lst_box[-1].opp_y))
 
         for box in self.lst_box:

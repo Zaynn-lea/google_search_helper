@@ -19,7 +19,7 @@ app made in python using pygame and pygame_widgets
 
 import pygame
 
-import colors
+import graphic_tool_import as gti
 import pygame_widgets_import as pwi
 
 
@@ -124,24 +124,24 @@ class Box(object):
 
         # border :
 
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
-        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, gti.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
 
         # label
         self.display_text(self.box_type.capitalize(), (x + 75, y + 15),
-                          colors.colors["white"], is_center=(True, True), font_size=23)
+                          gti.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons
         self.left_button = pwi.Button(self.world.screen, x + 10, y + 30, 30, 20, text="<-",
-                                      textColour=colors.colors["green"], font_size=30,
+                                      textColour=gti.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
         self.delete_button = pwi.Button(self.world.screen, x + 60, y + 30, 30, 20, text="X",
-                                        textColour=colors.colors["red"], font_size=30,
+                                        textColour=gti.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
         self.right_button = pwi.Button(self.world.screen, x + 110, y + 30, 30, 20, text="->",
-                                       textColour=colors.colors["green"], font_size=30,
+                                       textColour=gti.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
         # input:
@@ -461,25 +461,25 @@ class BoxAny(Box):
 
         # border :
 
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
-        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, gti.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
 
         # the label and buttons are centered because there is no input_text
         # label :
         self.display_text(self.box_type.capitalize(), (x + 75, y + 20),
-                          colors.colors["white"], is_center=(True, True), font_size=23)
+                          gti.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons :
         self.left_button = pwi.Button(self.world.screen, x + 10, y + 45, 30, 20, text="<-",
-                                      textColour=colors.colors["green"], font_size=30,
+                                      textColour=gti.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
         self.delete_button = pwi.Button(self.world.screen, x + 60, y + 45, 30, 20, text="X",
-                                        textColour=colors.colors["red"], font_size=30,
+                                        textColour=gti.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
         self.right_button = pwi.Button(self.world.screen, x + 110, y + 45, 30, 20, text="->",
-                                       textColour=colors.colors["green"], font_size=30,
+                                       textColour=gti.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
     def update_index(self, new_index: int):
@@ -605,24 +605,24 @@ class BoxDate(Box):
 
         # border :
 
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
-        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, gti.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
 
         # label :
         self.display_text(self.box_type.capitalize(), (x + 75, y + 15),
-                          colors.colors["white"], is_center=(True, True), font_size=23)
+                          gti.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons
         self.left_button = pwi.Button(self.world.screen, x + 10, y + 25, 30, 20, text="<-",
-                                      textColour=colors.colors["green"], font_size=30,
+                                      textColour=gti.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
         self.delete_button = pwi.Button(self.world.screen, x + 60, y + 25, 30, 20, text="X",
-                                        textColour=colors.colors["red"], font_size=30,
+                                        textColour=gti.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
         self.right_button = pwi.Button(self.world.screen, x + 110, y + 25, 30, 20, text="->",
-                                       textColour=colors.colors["green"], font_size=30,
+                                       textColour=gti.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
         # date input
@@ -631,13 +631,13 @@ class BoxDate(Box):
         self.day_input = pwi.TextBox(self.world.screen,   x + 115, y + 65, 35, 30)
 
         # label for the input
-        self.display_text("year",  (x + 32,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
-        self.display_text("month", (x + 87,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
-        self.display_text("day",   (x + 132, y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        self.display_text("year",  (x + 32,  y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
+        self.display_text("month", (x + 87,  y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
+        self.display_text("day",   (x + 132, y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
 
         # " / " between input boxes
-        self.display_text('/', (x + 65,  y + 80), colors.colors["white"], is_center=(True, True), font_size=40)
-        self.display_text('/', (x + 110, y + 80), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 65,  y + 80), gti.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 80), gti.colors["white"], is_center=(True, True), font_size=40)
 
     def update_index(self, new_index: int):
         """
@@ -782,24 +782,24 @@ class BoxDateRange(Box):
 
         # border :
 
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
-        pygame.draw.line(self.world.screen, colors.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     y),     (opp_x, y),     2)  # top
-        pygame.draw.line(self.world.screen, colors.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (x,     opp_y), 2)  # left
+        pygame.draw.line(self.world.screen, gti.colors["white"], (opp_x, y),     (opp_x, opp_y), 2)  # right
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     y),     (opp_x, y),     2)  # top
+        pygame.draw.line(self.world.screen, gti.colors["white"], (x,     opp_y), (opp_x, opp_y), 2)  # bottom
 
         # label :
         self.display_text(self.box_type.capitalize(), (x + 75, y + 15),
-                          colors.colors["white"], is_center=(True, True), font_size=23)
+                          gti.colors["white"], is_center=(True, True), font_size=23)
 
         # buttons
         self.left_button = pwi.Button(self.world.screen, x + 10, y + 25, 30, 20, text="<-",
-                                      textColour=colors.colors["green"], font_size=30,
+                                      textColour=gti.colors["green"], font_size=30,
                                       onClick=lambda: self.world.box_go_left(self.index))
         self.delete_button = pwi.Button(self.world.screen, x + 60, y + 25, 30, 20, text="X",
-                                        textColour=colors.colors["red"], font_size=30,
+                                        textColour=gti.colors["red"], font_size=30,
                                         onClick=lambda: self.world.delete_box(self.index))
         self.right_button = pwi.Button(self.world.screen, x + 110, y + 25, 30, 20, text="->",
-                                       textColour=colors.colors["green"], font_size=30,
+                                       textColour=gti.colors["green"], font_size=30,
                                        onClick=lambda: self.world.box_go_right(self.index))
 
         # first date input
@@ -813,18 +813,18 @@ class BoxDateRange(Box):
         self.last_day_input = pwi.TextBox(self.world.screen,   x + 115, y + 70, 35, 25)
 
         # label for the input
-        # self.display_text("year",  (x + 32,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
-        # self.display_text("month", (x + 87,  y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
-        # self.display_text("day",   (x + 132, y + 50), colors.colors["white"], is_center=(True, False), font_size=20)
+        # self.display_text("year",  (x + 32,  y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
+        # self.display_text("month", (x + 87,  y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
+        # self.display_text("day",   (x + 132, y + 50), gti.colors["white"], is_center=(True, False), font_size=20)
 
         # TODO : make the interface more easy to use
 
         # " / " between input boxes
-        self.display_text('/', (x + 65,  y + 85), colors.colors["white"], is_center=(True, True), font_size=40)
-        self.display_text('/', (x + 110, y + 85), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 65,  y + 85), gti.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 85), gti.colors["white"], is_center=(True, True), font_size=40)
 
-        self.display_text('/', (x + 65,  y + 65), colors.colors["white"], is_center=(True, True), font_size=40)
-        self.display_text('/', (x + 110, y + 65), colors.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 65,  y + 65), gti.colors["white"], is_center=(True, True), font_size=40)
+        self.display_text('/', (x + 110, y + 65), gti.colors["white"], is_center=(True, True), font_size=40)
 
     def update_index(self, new_index: int):
         """
