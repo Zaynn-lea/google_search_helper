@@ -12,7 +12,7 @@ see on gitHub :
 
 this module contains :
 
-    - TODO
+    - distance : a function to compute the distance between 2 point in n dimension
 """
 
 import math
@@ -25,9 +25,22 @@ from . import vector
 # |   geometric functions   |
 # +-------------------------+
 def distance(first_point: [int, float, tuple, list, vector.Vector],
-             second_point: [int, float, tuple, list, vector.Vector]):
+             second_point: [int, float, tuple, list, vector.Vector]) -> [int, float]:
     """
-    TODO
+    function to compute the distance between 2 points
+
+    the dimensions aren't important, if one point have a smaller dimension than the other,
+    the coordinates will be completed by 0s
+
+    --------------------------------------------------------------------------------------------------------------------
+
+    :param first_point: one end of the distance
+    :type: number | tuple(number) | int(number) | Vector object
+    :param second_point: the other end of the distance
+    :type: number | tuple(number) | int(number) | Vector object
+
+    :return: the distane
+    :type: number
     """
     first_point_temp = []
     second_point_temp = []
@@ -60,6 +73,9 @@ def distance(first_point: [int, float, tuple, list, vector.Vector],
     dist = 0
 
     for i in range(max_index):
+        if not (err.test_class(first_point_temp[i], int, float) and err.test_class(second_point_temp[i], int, float)):
+            raise TypeError("The coordinates of the points must be real numbers")
+
         if i >= length_1:
             dist += second_point_temp[i] ** 2
 

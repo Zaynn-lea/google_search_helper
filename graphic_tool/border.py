@@ -12,7 +12,7 @@ see on gitHub :
 
 this module contains :
 
-    - TODO
+    - Border : a class to have a border with the option of rounded corner with other options than pygame.draw.rect
 """
 
 import pygame
@@ -30,8 +30,6 @@ def _collection_to_int(col: [list, tuple]) -> [list, tuple]:
     """
     TODO
     """
-    # TODO : error checking
-
     new_col = []
 
     for elt in col:
@@ -45,12 +43,11 @@ def _collection_to_int(col: [list, tuple]) -> [list, tuple]:
         return tuple(new_col)
     return new_col
 
+
 def _collection_to_abs(col: [list, tuple]) -> [list, tuple]:
     """
     TODO
     """
-    # TODO : error checking
-
     new_col = []
 
     for elt in col:

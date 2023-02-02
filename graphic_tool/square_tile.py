@@ -1,6 +1,6 @@
 
 """
-submodule of the graphic_tool package made to handle definitions of 2D square tyles
+submodule of the graphic_tool package made to handle definitions of 2D square tiles
 
 @author: Zaynn-Lea
 
@@ -10,13 +10,13 @@ see on gitHub :
 
 ------------------------------------------------------------------------------------------------------------------------
 
-    - Tyle : an abstract class to represent a tyle
+    - Tile : an abstract class to represent a tile
 
-    - SqTyle : a base class to represent a square tyle
+    - SqTile : a base class to represent a square tile
 
-    - SqPathTyle : a class to represent a square tyle containing or acting like a path
+    - SqPathTile : a class to represent a square tile containing or acting like a path
 
-    - SqVegetationTyle : a class to represent a square tyle containing or acting like a vegetation
+    - SqVegetationTile : a class to represent a square tile containing or acting like a vegetation
 """
 
 import pygame
@@ -26,18 +26,18 @@ from . import vector
 
 
 # +------------------+
-# |   Tyle classes   |
+# |   Tile classes   |
 # +------------------+
-class Tyle(object):
+class Tile(object):
     def __init__(self):
         """
-        this is an abstract Tyle class, used to derive SqtTyle and HexTyle and enabling polymorphism
+        this is an abstract Tile class, used to derive SqtTile and HexTile and enabling polymorphism
         """
         pass
 
     def draw(self, surface: pygame.Surface, coord: [tuple, list, vector.Vector2D]):
         """
-        this method is to draw the tyle
+        this method is to draw the tile
 
         :param coord: a Vector2D object a tuple or list of integer
         :param surface: a Pygame.Surface object
@@ -46,32 +46,32 @@ class Tyle(object):
 
 
 # +-------------------------+
-# |   Square Tyle classes   |
+# |   Square Tile classes   |
 # +-------------------------+
-class SqTyle(Tyle):
+class SqTile(Tile):
     def __init__(self):
         """
-        base class for square tyle objects
+        base class for square tile objects
 
         ----------------------------------------------------------------------------------------------------------------
 
         Methods :
 
             .draw(surface, coord) -> None
-                draw the tyle on the surface
+                draw the tile on the surface
         """
         super().__init__()
 
         self.is_walkable = False
-        self.is_interactable = False
-        self.deplacement_dificulty = 1
+        self.is_interactive = False
+        self.movement_difficulty = 1
         self.orientation = 0
 
-        self.image = pygame.image.load("image/tyle/nothing_tyle.png")
+        self.image = pygame.image.load("image/tile/nothing_tile.png")
 
     def draw(self, surface: pygame.Surface, coord: [tuple, list, vector.Vector2D]):
         """
-        method to draw the tyle, the coord are the top left coord
+        method to draw the tile, the coord are the top left coord
 
         :param coord: a Vector2D object a tuple or list of integer
         :param surface: a Pygame.Surface object
@@ -95,10 +95,10 @@ class SqTyle(Tyle):
             raise TypeError
 
 
-default_square_tyle = SqTyle()
+default_square_tile = SqTile()
 
 
-class SqPathTyle(SqTyle):
+class SqPathTile(SqTile):
     path_type_dico = {
         # classic/straight
         "end": None,
@@ -110,14 +110,14 @@ class SqPathTyle(SqTyle):
 
     def __init__(self, path_type: str, path_image: str, rotation: int = 0):
         """
-        class to represent every path tyle (see bellow for list)
+        class to represent every path tile (see bellow for list)
 
         ----------------------------------------------------------------------------------------------------------------
 
         Methods :
 
             .draw(surface, coord) -> None
-                draw the tyle on the surface
+                draw the tile on the surface
 
         ----------------------------------------------------------------------------------------------------------------
 
@@ -138,17 +138,17 @@ class SqPathTyle(SqTyle):
         self.image = pygame.image.load(path_image)
 
 
-class SqVegetationTyle(SqTyle):
+class SqVegetationTile(SqTile):
     def __init__(self, path_image: str):
         """
-        class to represent every path tyle (see bellow for list)
+        class to represent every path tile (see bellow for list)
 
         ----------------------------------------------------------------------------------------------------------------
 
         Methods :
 
             .draw(surface, coord) -> None
-                draw the tyle on the surface
+                draw the tile on the surface
 
         ----------------------------------------------------------------------------------------------------------------
 
@@ -161,4 +161,4 @@ class SqVegetationTyle(SqTyle):
             raise _err.ExtensionError
 
         self.image = pygame.image.load(path_image)
-        self.deplacement_dificulty = 3
+        self.movement_difficulty = 3

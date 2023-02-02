@@ -13,6 +13,8 @@ see on gitHub :
     - LengthError : inherit from ValueError and define a more specific length error
 
     - ExtensionError : inherit from ValueError and define a more specific extension error
+
+    - test_class : function to test if an object is an instance of a class or subclass
 """
 
 
@@ -42,13 +44,30 @@ class ExtensionError(ValueError):
 # +---------------------+
 def test_class(var, *args: type) -> bool:
     """
-    TODO
+    function to test if an object is an instance of a class or an instance of a subclass
+    of at least one of the type or class given in *args
+
+    --------------------------------------------------------------------------------------------------------------------
+
+    :param var: the variable you need to test
+
+    :param *args: one or more class and type
+
+    :return: the result of the test
+    :type: bool
     """
-    classes = list(args)
-    test = True
+    test = False
+    state = True
     i = 0
 
-    while test:
-        test = isinstance(var, classes[i]) or issubclass(type(var), classes[i])
+    while state and not test:
+        try:
+            test = isinstance(var, *args[i]) or issubclass(type(var), *args[i])
+
+        except IndexError:
+            state = False
+
+        else:
+            i += 1
 
     return test

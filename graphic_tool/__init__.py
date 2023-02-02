@@ -43,4 +43,4 @@ with this way, you only import with the tools you need and you have them in a si
 
 __author__ = "Gely Lea"
 
-__all__ = ["vector", "matrix", "triangles", "square_tyle", "colors"]
+__all__ = ["vector", "matrix", "triangles", "square_tile.py", "colors", "border"]
