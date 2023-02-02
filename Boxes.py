@@ -721,8 +721,6 @@ class BoxDate(Box):
             self.day_input.getText()
         )
 
-        # TODO : better error handling in that case, like informing the user with a popup
-
         text = f"{self.box_type.lower()}:{year}{self.separator}{month}{self.separator}{day}"
 
         if (parser() is None) or (parser is None):
@@ -927,8 +925,6 @@ class BoxDateRange(Box):
             self.last_month_input.getText(),
             self.last_day_input.getText()
         )
-
-        # TODO : better error handling in that case, like informing the user
 
         text = f"{first_year}{self.separator}{first_month}{self.separator}{first_day}" \
                f"::{last_year}{self.separator}{last_month}{self.separator}{last_day}"
