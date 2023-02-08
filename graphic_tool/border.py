@@ -28,7 +28,16 @@ from . import vector
 # +-------------------+
 def _collection_to_int(col: [list, tuple]) -> [list, tuple]:
     """
-    TODO
+    function to convert a collection (list or tuple) of number into explicit integer
+    throw a type error if there is one or more elements which aren't number
+
+    --------------------------------------------------------------------------------------------------------------------
+
+    :param col: a collection of number
+    :type: tuple or list of float or int
+
+    :return: a collection of explicit integer
+    :type: tuple or list of int
     """
     new_col = []
 
@@ -46,7 +55,16 @@ def _collection_to_int(col: [list, tuple]) -> [list, tuple]:
 
 def _collection_to_abs(col: [list, tuple]) -> [list, tuple]:
     """
-    TODO
+    function to convert a collection (list or tuple) of number and take the absolute value of each element
+    throw a type error if there is one or more elements which aren't number
+
+    --------------------------------------------------------------------------------------------------------------------
+
+    :param col: a collection of number
+    :type: tuple or list of float or int
+
+    :return: a collection of number
+    :type: tuple or list of float or int
     """
     new_col = []
 
@@ -73,12 +91,45 @@ class Border(object):
                  border_radius:    [int, tuple[int, int, int, int], list[int, int, int, int], vector.Vector4D] = 0,
                  border_width:     int = 1):
         """
-        TODO
-        corner 0 ________________ corner 1
-                /                \
-                |                |
-                |                |
-        corner 2\________________/ corner 3
+        This class is to have a border with the possibility to have rounded corner
+
+        It has some other functionality than pygame.draw.rect,
+        for instance you can know if one or multiple points are inside of the border or not
+
+        the corner of the border are organized as :
+            corner 0 ________________ corner 1
+                    /                \
+                    |                |
+                    |                |
+            corner 2\________________/ corner 3
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        Methods:
+
+            .draw(surface)
+                draw the border
+
+            .is_in(coord) -> bool
+
+            .is_in(coord) -> bool, list
+
+            .erase(surface, background_color)
+                redraw the border in background_color
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        :param coord_up_left: the coordinate of corner 0
+        :type: int, tuple or list of 3 ints or Vector3D
+        :param coord_down_right:the coordinate of corner 3
+        :type: int, tuple or list of 3 ints or Vector3D
+        :param color: the color of the border
+        :type: str, tuple or list of 3 ints or Vector3D
+
+        :param border_radius: the radius of the rounded corners, optional defaulted to 0
+        :type: int, tuple or list of 4 ints or Vector4D
+        :param border_width: the width of the border, optional defaulted to 1
+        :type: int
         """
         # coord_up_left :
 
@@ -145,7 +196,12 @@ class Border(object):
 
     def draw(self, surface: pygame.Surface):
         """
-        TODO
+        method to draw the border on a surface
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        :param surface: the surface to draw on
+        :type: a pygame.Surface object
         """
         # top border :
         pygame.draw.line(surface, self.color,
@@ -225,9 +281,19 @@ class Border(object):
 
     def is_in(self, coord: [tuple[int, int], list[int, int], vector.Vector2D]) -> bool:
         """
-        TODO
+        method to test if a point is insides of the border or not
 
-        test if it's in the rectangle and if yes, we test if it's inside or outside of the circled corner
+        technic used to not have too much test to compute:
+
+            test if it's in the rectangle and if yes, we test if it's inside or outsides of the circled corner
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        :param coord: a point in space
+        :type: tuple or list of 2 ints or Vector2D
+
+        :return: True if the point is inside the border, False otherwise
+        :type: bool
         """
         x = coord[0]
         y = coord[1]
@@ -286,9 +352,20 @@ class Border(object):
         return False
 
     def are_in(self, coord: [list[tuple[int, int], list[int, int], vector.Vector2D],
-                             tuple[tuple[int, int], list[int, int], vector.Vector2D]]) -> [bool, list]:
+                             tuple[tuple[int, int], list[int, int], vector.Vector2D]]) -> list:
         """
-        TODO
+        method to test if a collection of points is insides of the border or not
+        test every point in the collection
+
+        uses the border.is_in method for every point
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        :param coord: a collection of point in space
+        :type: tuple or list of tuple or list of 2 ints or Vector2D
+
+        :return: True if the point is inside the border, False otherwise
+        :type: a list of bool
         """
         test = []
 
@@ -301,7 +378,14 @@ class Border(object):
               surface: pygame.Surface,
               background_color: [str, [int, int, int], tuple[int, int, int], vector.Vector3D]):
         """
-        TODO
+        method that redraw the border in the color of the background to make it disappear
+
+        ----------------------------------------------------------------------------------------------------------------
+
+        :param surface: the surface to draw on
+        :type: a pygame.Surface object
+        :param background_color: the color of the border
+        :type: str, tuple or list of 3 ints or Vector3D
         """
         if err.test_class(background_color, str):
             self.color = colors.colors[background_color]

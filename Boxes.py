@@ -37,8 +37,8 @@ def test_and_handle_ymd(year_input, month_input, day_input) -> tuple[str, str, s
     :param day_input: the raw day input from the input of the Box
     :type: str
 
-    :return:
-    :type: tuple[str, str, str)
+    :return: the tested input
+    :type: tuple[str, str, str]
     """
     year = year_input  .replace(' ', '')[:4]
     month = month_input.replace(' ', '')[:2]
