@@ -2,15 +2,11 @@
 """
 submodule du package graphic_tool made to handle color definition and manipulation
 
-here the module has been extracted from the package to be use as a stand alone
-
 @author: Zaynn-Lea
 
 see on gitHub :
     * author :
         - Zaynn-Lea : https://github.com/Zaynn-lea
-
-    * project : https://github.com/Zaynn-lea/google_search_helper
 
 ------------------------------------------------------------------------------------------------------------------------
 
