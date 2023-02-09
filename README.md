@@ -6,5 +6,3 @@ A Graphical Interface app to help you use the Google search operators and other 
 ### Technical documentation 
 
 This app has been build using python and pygame for the GUI.
-
-<!-- TODO -->
