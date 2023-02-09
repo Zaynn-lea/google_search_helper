@@ -22,6 +22,11 @@ from . import colors
 from . import functions
 from . import vector
 
+_PI_ON_2 = 1.570796326
+_PI = 3.141592653
+_PI_3_ON_2 = 4.712388979
+_PI_2 = 6.283185306
+
 
 # +-------------------+
 # |   internal tool   |
@@ -136,14 +141,14 @@ class Border(object):
         if err.test_class(coord_up_left, vector.Vector2D):
             self.x_1, self.y_1 = self.coord_up_left = _collection_to_int(coord_up_left.get_tuple())
         else:
-            self.x_1, self.y_1 = self.coord_up_left = coord_up_left.copy()
+            self.x_1, self.y_1 = self.coord_up_left = coord_up_left[:]
 
         # coord_down_right :
 
         if err.test_class(coord_down_right, vector.Vector2D):
             self.x_2, self.y_2 = self.coord_up_left = _collection_to_int(coord_down_right.get_tuple())
         else:
-            self.x_2, self.y_2 = self.coord_up_left = coord_down_right.copy()
+            self.x_2, self.y_2 = self.coord_up_left = coord_down_right[:]
 
         # sizes :
 
@@ -159,7 +164,7 @@ class Border(object):
             if err.test_class(color, vector.Vector3D):
                 color_temp = color.get_tuple()
             else:
-                color_temp = color.copy()
+                color_temp = color[:]
 
             if 0 < color_temp[0] < 255 or 0 < color_temp[1] < 255 or 0 < color_temp[2] < 255:
                 raise ValueError("color must use the rgb system, with 3 values ranging from 0 to 255")
@@ -173,7 +178,7 @@ class Border(object):
         elif err.test_class(border_radius, vector.Vector3D):
             border_temp = _collection_to_int(border_radius.get_tuple())
         else:
-            border_temp = border_radius.copy()
+            border_temp = border_radius[:]
 
         if self.width > self.height:
             mini = self.height // 2
@@ -183,7 +188,7 @@ class Border(object):
             mini_type = "width"
 
         for i in range(4):
-            if abs(border_radius[i]) > mini:
+            if abs(border_temp[i]) > mini:
                 raise ValueError(f"border_radius must not exceed half of {mini_type} ")
 
         self.border_radius = border_temp
@@ -225,8 +230,13 @@ class Border(object):
 
         # top right corner :
         if self.border_radius[0] > 0:
-            t_r_rect = pygame.Rect(self.x_1, self.y_1, self.border_radius_dist[0] * 2, self.border_radius_dist[0] * 2)
-            pygame.draw.arc(surface, self.color, t_r_rect, 90, 180, self.border_width)
+            t_r_rect = pygame.Rect(
+                self.x_1,
+                self.y_1,
+                self.border_radius_dist[0] * 2,
+                self.border_radius_dist[0] * 2
+            )
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI_ON_2, _PI, self.border_width)
 
         elif self.border_radius[0] < 0:
             t_r_rect = pygame.Rect(
@@ -235,49 +245,64 @@ class Border(object):
                 self.border_radius_dist[0] * 2,
                 self.border_radius_dist[0] * 2
             )
-            pygame.draw.arc(surface, self.color, t_r_rect, 270, 0, self.border_width)
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI_3_ON_2, 0, self.border_width)
 
         # top left corner :
         if self.border_radius[1] > 0:
-            t_r_rect = pygame.Rect(self.x_2, self.y_1, self.border_radius_dist[1] * 2, self.border_radius_dist[1] * 2)
-            pygame.draw.arc(surface, self.color, t_r_rect, 0, 90, self.border_width)
+            t_r_rect = pygame.Rect(
+                self.x_2 - (self.border_radius_dist[1] * 2),
+                self.y_1,
+                self.border_radius_dist[1] * 2,
+                self.border_radius_dist[1] * 2
+            )
+            pygame.draw.arc(surface, self.color, t_r_rect, 0, _PI_ON_2, self.border_width)
 
         elif self.border_radius[1] < 0:
             t_r_rect = pygame.Rect(
-                self.x_2 + self.border_radius_dist[1],
+                self.x_2 - self.border_radius_dist[1],
                 self.y_1 - self.border_radius_dist[1],
                 self.border_radius_dist[1] * 2,
                 self.border_radius_dist[1] * 2
             )
-            pygame.draw.arc(surface, self.color, t_r_rect, 180, 270, self.border_width)
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI, _PI_3_ON_2, self.border_width)
 
         # bottom right corner :
         if self.border_radius[2] > 0:
-            t_r_rect = pygame.Rect(self.x_1, self.y_2, self.border_radius_dist[2] * 2, self.border_radius_dist[2] * 2)
-            pygame.draw.arc(surface, self.color, t_r_rect, 180, 270, self.border_width)
+            t_r_rect = pygame.Rect(
+                self.x_1,
+                self.y_2 - (self.border_radius_dist[2] * 2),
+                self.border_radius_dist[2] * 2,
+                self.border_radius_dist[2] * 2
+            )
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI, _PI_3_ON_2, self.border_width)
 
         elif self.border_radius[0] < 0:
             t_r_rect = pygame.Rect(
                 self.x_1 - self.border_radius_dist[2],
-                self.y_2 + self.border_radius_dist[2],
+                self.y_2 - self.border_radius_dist[2],
                 self.border_radius_dist[2] * 2,
                 self.border_radius_dist[2] * 2
             )
-            pygame.draw.arc(surface, self.color, t_r_rect, 0, 90, self.border_width)
+            pygame.draw.arc(surface, self.color, t_r_rect, 0, _PI_ON_2, self.border_width)
 
         # bottom left corner :
         if self.border_radius[3] > 0:
-            t_r_rect = pygame.Rect(self.x_2, self.y_2, self.border_radius_dist[3] * 2, self.border_radius_dist[3] * 2)
-            pygame.draw.arc(surface, self.color, t_r_rect, 270, 0, self.border_width)
-
-        elif self.border_radius[3] < 0:
             t_r_rect = pygame.Rect(
-                self.x_2 + self.border_radius_dist[3],
-                self.y_2 + self.border_radius_dist[3],
+                self.x_2 - (self.border_radius_dist[3] * 2),
+                self.y_2 - (self.border_radius_dist[3] * 2),
                 self.border_radius_dist[3] * 2,
                 self.border_radius_dist[3] * 2
             )
-            pygame.draw.arc(surface, self.color, t_r_rect, 90, 180, self.border_width)
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI_3_ON_2, 0, self.border_width)
+
+        elif self.border_radius[3] < 0:
+            t_r_rect = pygame.Rect(
+                self.x_2 - self.border_radius_dist[3],
+                self.y_2 - self.border_radius_dist[3],
+                self.border_radius_dist[3] * 2,
+                self.border_radius_dist[3] * 2
+            )
+            pygame.draw.arc(surface, self.color, t_r_rect, _PI_ON_2, _PI, self.border_width)
 
     def is_in(self, coord: [tuple[int, int], list[int, int], vector.Vector2D]) -> bool:
         """
@@ -393,7 +418,7 @@ class Border(object):
             if err.test_class(background_color, vector.Vector3D):
                 color_temp = background_color.get_tuple()
             else:
-                color_temp = background_color.copy()
+                color_temp = background_color[:]
 
             if 0 < color_temp[0] < 255 or 0 < color_temp[1] < 255 or 0 < color_temp[2] < 255:
                 raise ValueError("color must use the rgb system, with 3 values ranging from 0 to 255")

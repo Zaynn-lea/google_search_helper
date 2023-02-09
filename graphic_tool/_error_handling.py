@@ -62,7 +62,7 @@ def test_class(var, *args: type) -> bool:
 
     while state and not test:
         try:
-            test = isinstance(var, *args[i]) or issubclass(type(var), *args[i])
+            test = isinstance(var, args[i]) or issubclass(type(var), args[i])
 
         except IndexError:
             state = False

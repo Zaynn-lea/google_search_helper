@@ -100,13 +100,13 @@ class World(object):
         self.display_text("Add Options", ((screen_width // 2), 120), white,
                           is_center=(True, False), font_size=40)
         # buttons :
-        normal_button = pwi.Button(self.screen, 50, 165, 70, 20, text="Normal", fontSize=25,
+        normal_button = pwi.Button(self.screen, 50, 165, 70, 20, text="Normal", fontSize=25, radius=7,
                                    onClick=lambda: self.lst_box.append(Boxes.Box(self, len(self.lst_box))))
-        exact_button = pwi.Button(self.screen, 140, 165, 70, 20, text="Exact", fontSize=25,
+        exact_button = pwi.Button(self.screen, 140, 165, 70, 20, text="Exact", fontSize=25, radius=7,
                                   onClick=lambda: self.lst_box.append(Boxes.BoxExact(self, len(self.lst_box))))
-        avoid_button = pwi.Button(self.screen, 230, 165, 70, 20, text="Avoid", fontSize=25,
+        avoid_button = pwi.Button(self.screen, 230, 165, 70, 20, text="Avoid", fontSize=25, radius=7,
                                   onClick=lambda: self.lst_box.append(Boxes.BoxAvoid(self, len(self.lst_box))))
-        any_button = pwi.Button(self.screen, 320, 165, 70, 20, text="Any", fontSize=25,
+        any_button = pwi.Button(self.screen, 320, 165, 70, 20, text="Any", fontSize=25, radius=7,
                                 onClick=lambda: self.lst_box.append(Boxes.BoxAny(self, len(self.lst_box))))
 
         def date_button_onclick():
@@ -125,15 +125,17 @@ class World(object):
                                      lambda world, index: Boxes.BoxDate(world, index, box_type="Before"),
                                      lambda world, index: Boxes.BoxDate(world, index, box_type="After"),
                                      lambda world, index: Boxes.BoxDateRange(world, index),
-                                 ], fontSize=25)
-        date_button = pwi.Button(self.screen, 410, 150, 70, 20, text="Date", fontSize=25,
+                                 ], fontSize=25, borderRadius=7)
+        date_button = pwi.Button(self.screen, 410, 150, 70, 20, text="Date", fontSize=25, radius=7,
                                  onClick=date_button_onclick)
 
         # border :
-        pygame.draw.line(self.screen, white, (30,                110), (30,                210), 2)  # left
-        pygame.draw.line(self.screen, white, (screen_width - 30, 110), (screen_width - 30, 210), 2)  # right
-        pygame.draw.line(self.screen, white, (30,                110), (screen_width - 30, 110), 2)  # top
-        pygame.draw.line(self.screen, white, (screen_width - 30, 210), (30,                210), 2)  # bottom
+        # pygame.draw.line(self.screen, white, (30,                110), (30,                210), 2)  # left
+        # pygame.draw.line(self.screen, white, (screen_width - 30, 110), (screen_width - 30, 210), 2)  # right
+        # pygame.draw.line(self.screen, white, (30,                110), (screen_width - 30, 110), 2)  # top
+        # pygame.draw.line(self.screen, white, (screen_width - 30, 210), (30,                210), 2)  # bottom
+        border_menu = gti.Border((30, 110), (screen_width - 30, 210), white, border_radius=20, border_width=3)
+        border_menu.draw(self.screen)
 
         # +-------------------------+
         # | list of the input boxes |
@@ -146,12 +148,13 @@ class World(object):
         # +----------------------------+
 
         reset_button = pwi.Button(self.screen, (screen_width // 2) - 310, 440, 200, 40, text="Reset",
-                                  fontSize=30, onClick=lambda: self.reset_lst_box())
+                                  fontSize=30, radius=7, onClick=lambda: self.reset_lst_box())
         search_button = pwi.Button(self.screen, (screen_width // 2) - 100, 440, 200, 40, text="Search on the web",
-                                   fontSize=30, onClick=lambda: self.search(search_mode_selection))
+                                   fontSize=30, radius=7, onClick=lambda: self.search(search_mode_selection))
         search_mode_selection = pwi.Checkbox(self.screen, (screen_width // 2) + 110, 430, 200, 60,
                                              ("Without keyword", "With keyword"),
-                                             colour=(150, 150, 150), fontSize=30)  # the same color as the button
+                                             colour=(150, 150, 150), fontSize=30, radius=7)
+        # (150, 150, 150) is the same color as the buttons
 
         # TODO : making border radius to have a more pleasant experience
 
@@ -226,7 +229,7 @@ class World(object):
         :param box_index: the index of the box you want to delete
         :type: int
         """
-        if 0 > box_index or box_index < len(self.lst_box):
+        if 0 > box_index > len(self.lst_box):
             raise ValueError("box_index must be positive")
 
         lst_left, del_box, lst_right = self.lst_box[:box_index], self.lst_box[box_index], self.lst_box[box_index + 1:]
